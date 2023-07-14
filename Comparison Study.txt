@@ -1,0 +1,78 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import r2_score
+from tabulate import tabulate
+from sklearn.svm import SVR
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.linear_model import Lasso, Ridge, ElasticNet
+from sklearn.neural_network import MLPRegressor
+
+# Extract the features and target variable
+X = df.drop(columns=['PM2.5'])
+y = df['PM2.5']
+
+# split the data into a training set and a test set
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Scale the data
+#scaler = StandardScaler()
+#X_train = scaler.fit_transform(X_train)
+#X_test = scaler.transform(X_test)
+
+
+
+# Initialize the regression models
+svc = SVR()
+rf = RandomForestRegressor()
+dt = DecisionTreeRegressor()
+lasso = Lasso()
+ridge = Ridge()
+elastic = ElasticNet()
+nn = MLPRegressor()
+
+# Train the regression models
+svc.fit(X_train, y_train)
+rf.fit(X_train, y_train)
+dt.fit(X_train, y_train)
+lasso.fit(X_train, y_train)
+ridge.fit(X_train, y_train)
+elastic.fit(X_train, y_train)
+nn.fit(X_train, y_train)
+
+# Predict the target variable for the test data
+y_pred_svc = svc.predict(X_test)
+y_pred_rf = rf.predict(X_test)
+y_pred_dt = dt.predict(X_test)
+y_pred_lasso = lasso.predict(X_test)
+y_pred_ridge = ridge.predict(X_test)
+y_pred_elastic = elastic.predict(X_test)
+y_pred_nn = nn.predict(X_test)
+
+# Compute the R-squared score for each model
+r2_svc = r2_score(y_test, y_pred_svc)
+r2_rf = r2_score(y_test, y_pred_rf)
+r2_dt = r2_score(y_test, y_pred_dt)
+r2_lasso = r2_score(y_test, y_pred_lasso)
+r2_ridge = r2_score(y_test, y_pred_ridge)
+r2_elastic = r2_score(y_test, y_pred_elastic)
+r2_nn = r2_score(y_test, y_pred_nn)
+
+# Plot the scores
+models = ['SVR', 'Random Forest', 'Decision Tree', 'Lasso', 'Ridge', 'Elastic Net', 'Neural Network']
+scores = [r2_svc, r2_rf, r2_dt, r2_lasso, r2_ridge, r2_elastic, r2_nn]
+table = list(zip(models, scores))
+headers = ["Model", "R2 Score"]
+
+print(tabulate(table, headers=headers))
+
+plt.xticks(rotation=90);
+plt.bar(models, scores)
+plt.xlabel('Regression Models')
+plt.ylabel('R-squared score')
+plt.title('Comparison of regression models in air quality prediction PM2.5')
+plt.show()

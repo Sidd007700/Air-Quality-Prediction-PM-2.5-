@@ -1,0 +1,18 @@
+# calculate correlation matrix
+corr_matrix = df.corr()
+# plot heatmap
+sns.heatmap(corr_matrix, annot=True, cmap='coolwarm')
+cols_to_exclude = ['Date', 'City']
+df = df.drop(cols_to_exclude, axis=1)
+##plot all X-features against output variable PM2.5
+col_=df.columns.tolist()[2:]
+for i in df.columns.tolist()[2:]:
+    sns.lmplot(x=i,y='PM2.5',data=df,markers='.')
+    
+
+# select the X features and y target variable
+X = df.drop(columns=['PM2.5'])
+y = df['PM2.5']
+
+# split the data into a training set and a test set
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)    

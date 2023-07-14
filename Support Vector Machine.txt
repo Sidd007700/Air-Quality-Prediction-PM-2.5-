@@ -1,0 +1,28 @@
+# Extract the features and target variable
+#X = df.drop(columns=['PM2.5','Date','City'])
+#y = df['PM2.5']
+
+# split the data into a training set and a test set
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create and train the SVR model
+regressor = SVR()
+regressor.fit(X_train, y_train)
+
+# Predict the values
+y_pred_train = regressor.predict(X_train)
+y_pred_test = regressor.predict(X_test)
+# Print the MSE and R-squared values for the training and testing sets
+print('MSE train:', mean_squared_error(y_train, y_pred_train))
+print('MSE test:', mean_squared_error(y_test, y_pred_test))
+print('R^2 train:', r2_score(y_train, y_pred_train))
+print('R^2 test:', r2_score(y_test, y_pred_test))
+#Plot the data
+plt.plot(y_train, '.', label='Train value')
+plt.plot(y_test.values, '.', label='Test value')
+plt.plot(y_pred_test, '.', label='Predicted value')
+plt.legend()
+plt.title('PM2.5 prediction with SVR')
+
+plt.ylabel('PM2.5')
+plt.show()

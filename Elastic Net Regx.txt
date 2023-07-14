@@ -1,0 +1,32 @@
+# select the X features and y target variable
+#X = df.drop(columns=['PM2.5','Date','City'])
+#y = df['PM2.5']
+
+# split the data into a training set and a test set
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+ain, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Fit the Elastic Net regression model
+model = ElasticNet(alpha=0.1, l1_ratio=0.5, max_iter=10000)
+model.fit(X_train, y_train)
+
+# Evaluate the model on test set
+#y_pred = model.predict(X_test)
+# Predict PM2.5 for training and testing data
+y_train_pred = model.predict(X_train)
+y_test_pred = model.predict(X_test)
+
+# Print the MSE and R-squared values for the training and testing sets
+print('MSE train:', mean_squared_error(y_train, y_train_pred))
+print('MSE test:', mean_squared_error(y_test, y_test_pred))
+print('R^2 train:', r2_score(y_train, y_train_pred))
+print('R^2 test:', r2_score(y_test, y_test_pred))
+
+plt.plot(y_train, '.', label='Train value')
+plt.plot(y_test.values, 'r.', label='Test value')
+plt.plot(y_test_pred, 'g.', label='Predicted value')
+plt.legend()
+plt.title('PM2.5 prediction with Elastic Net Regression')
+
+plt.ylabel('PM2.5')
+plt.show()

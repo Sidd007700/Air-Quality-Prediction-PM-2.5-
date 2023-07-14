@@ -1,0 +1,44 @@
+#Load data
+#define header
+col=['City','Date','PM2.5','PM10','NO','NO2','NOx','NH3','CO','SO2','O3','Benzene','Toluene','Xylene','AQI']
+
+#define number of columns from csv
+use=list(np.arange(len(col)))
+
+#read the data from csv
+df=pd.read_csv("cityDay.csv")
+df.head()
+
+df.dtypes
+
+df.shape
+
+#drop end rows with NaN values
+df.dropna(how='all',inplace=True)
+#drop NAN rows
+df.dropna(thresh=10,axis=0,inplace=True)
+
+# Calculate median of each column
+median_values = df.median()
+
+# Replace NaN values with median of respective column
+df.fillna(median_values, inplace=True)
+
+df.shape
+
+# convert "Date" column to datetime object
+df['Date'] = pd.to_datetime(df['Date'])
+
+# create new columns for day, month, and year
+df['Day'] = df['Date'].dt.day
+df['Month'] = df['Date'].dt.month
+df['Year'] = df['Date'].dt.year
+
+df.head()
+
+print('Count of missing values:\n',df.shape[0]-df.count())
+
+df['Date'] = pd.to_datetime(df['Date'])
+df['Date'] = df['Date'].dt.strftime('%m-%d-%Y')
+df.head()
+df.info()

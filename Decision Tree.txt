@@ -1,0 +1,36 @@
+# Initialize the decision tree regressor
+dt_regressor = DecisionTreeRegressor(random_state=42)
+
+# Fit the regressor to the training data
+dt_regressor.fit(X_train, y_train)
+
+# Make predictions on the testing data
+y_pred = dt_regressor.predict(X_test)
+
+# Evaluate the performance of the model using different metrics
+
+# Mean squared error (MSE)
+mse = mean_squared_error(y_test, y_pred)
+print('Mean Squared Error:', mse)
+
+# Root mean squared error (RMSE)
+rmse = np.sqrt(mse)
+print('Root Mean Squared Error:', rmse)
+
+# Mean absolute error (MAE)
+mae = mean_absolute_error(y_test, y_pred)
+print('Mean Absolute Error:', mae)
+
+# R-squared
+r2 = r2_score(y_test, y_pred)
+print('R-squared:', r2)
+
+# Plot actual and predicted values for Decision Tree
+plt.figure(figsize=(20,8))
+plt.plot(y_train.values, '.', label='Train Actual')
+plt.plot(y_test.values,'.', label='Test Actual')
+plt.plot(y_pred,'g.', label='Predicted')
+plt.legend()
+plt.title('Decision Tree Regression')
+#plt.xlabel("Date", fontsize = 15)
+plt.show()
